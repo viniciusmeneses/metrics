@@ -1,0 +1,26 @@
+detectors:
+  UtilityFunction:
+    enabled: false
+  IrresponsibleModule:
+    enabled: false
+
+directories:
+  app/controllers:
+    NestedIterators:
+      max_allowed_nesting: 2
+    UnusedPrivateMethod:
+      enabled: false
+    InstanceVariableAssumption:
+      enabled: false
+
+  app/mailers:
+    InstanceVariableAssumption:
+      enabled: false
+
+  app/models:
+    InstanceVariableAssumption:
+      enabled: false
+
+exclude_paths:
+  - db/migrate
+  - spec/**/*

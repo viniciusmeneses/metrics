@@ -1,0 +1,33 @@
+{
+  "plugins": ["jest-dom", "simple-import-sort", "import"],
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "alloy",
+    "alloy/react",
+    "alloy/typescript",
+    "plugin:jest-dom/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          ["^\\u0000"],
+          ["^\\w"],
+          ["^@"],
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"], // Parent imports and ".."
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"] // Same folder imports and "."
+        ]
+      }
+    ],
+    "no-eq-null": "off",
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }]
+  }
+}
