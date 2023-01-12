@@ -19,4 +19,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_11_233811) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "records", force: :cascade do |t|
+    t.datetime "timestamp", null: false
+    t.decimal "value", precision: 10, scale: 2, null: false
+    t.bigint "metric_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["metric_id"], name: "index_records_on_metric_id"
+    t.index ["timestamp", "metric_id"], name: "index_records_on_timestamp_and_metric_id"
+  end
+
+  add_foreign_key "records", "metrics"
 end
