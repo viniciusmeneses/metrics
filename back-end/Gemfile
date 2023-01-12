@@ -53,6 +53,9 @@ group :development do
   gem "standard", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
+
+  # Fake data
+  gem "faker"
 end
 
 group :test do
