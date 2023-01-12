@@ -3,6 +3,13 @@ detectors:
     enabled: false
   IrresponsibleModule:
     enabled: false
+  FeatureEnvy:
+    enabled: false
+  TooManyStatements:
+    max_statements: 8
+  MissingSafeMethod:
+    exclude:
+      - call!
 
 directories:
   app/controllers:

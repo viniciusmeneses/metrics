@@ -37,7 +37,7 @@ gem "bootsnap", require: false
 gem "rack-cors"
 
 # Use cases
-gem "u-case"
+gem "u-case", require: "u-case/with_activemodel_validation"
 
 # JSON Serializer
 gem "blueprinter"
