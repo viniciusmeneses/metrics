@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :records, only: :create, module: :metrics
   end
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  scope module: :reports, path: :reports do
+    resources :metrics, only: [:index, :show]
+  end
 end
