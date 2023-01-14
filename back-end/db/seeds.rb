@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
+return if Metric.exists?
+
 metrics = [
   Metric.create(name: "Signups"),
   Metric.create(name: "New Customers"),
