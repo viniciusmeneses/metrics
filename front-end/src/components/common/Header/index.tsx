@@ -1,5 +1,7 @@
 import { Box, Button, Heading, Stack, StackProps, Text, useDisclosure } from "@chakra-ui/react";
 
+import { CreateMetricModal } from "../../metric";
+
 export const Header = (props: StackProps) => {
   const createMetricModal = useDisclosure();
 
@@ -13,6 +15,8 @@ export const Header = (props: StackProps) => {
       <Button w={{ base: "full", sm: "140px" }} onClick={createMetricModal.onOpen}>
         Create metric
       </Button>
+
+      <CreateMetricModal {...createMetricModal} />
     </Stack>
   );
 };
