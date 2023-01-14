@@ -28,7 +28,7 @@ export const Home = () => {
 
       <VStack spacing={6}>
         {isLoading ? (
-          <Spinner color="red.500" size="xl" />
+          <Spinner color="primary.500" size="xl" />
         ) : (
           metrics?.map(({ id }) => <MetricCard key={id} metricId={id} w="full" />)
         )}

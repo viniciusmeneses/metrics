@@ -3,23 +3,12 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 
-import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
+import { extendTheme, theme as defaultTheme,withDefaultColorScheme } from "@chakra-ui/react";
 
 const theme = extendTheme(
   {
     colors: {
-      primary: {
-        50: "#fef5f7",
-        100: "#fbd7df",
-        200: "#f7b4c2",
-        300: "#f1859c",
-        400: "#ee6883",
-        500: "#e8355a",
-        600: "#cf173d",
-        700: "#a81231",
-        800: "#8f102a",
-        900: "#690b1f",
-      },
+      primary: defaultTheme.colors.teal,
       gray: {
         50: "#fafafa",
         100: "#f1f1f1",
@@ -38,7 +27,7 @@ const theme = extendTheme(
       heading: "Inter, sans-serif",
     },
     shadows: {
-      outline: "0 0 0 3px rgb(229, 25, 67, 0.3)",
+      outline: "0 0 0 3px rgb(49, 151, 149, 0.3)",
     },
     components: {
       Button: {

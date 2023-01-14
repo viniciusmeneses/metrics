@@ -8,8 +8,8 @@ export const Header = (props: StackProps) => {
   return (
     <Stack direction={{ base: "column", sm: "row" }} spacing={3} {...props}>
       <Box flex="1">
-        <Heading size="lg">Growth Metrics</Heading>
-        <Text color="gray.500">Analyze your growth metrics with a user-friendly dashboard</Text>
+        <Heading size="lg">Metrics</Heading>
+        <Text color="gray.500">Analyze your metrics with a user-friendly dashboard</Text>
       </Box>
 
       <Button w={{ base: "full", sm: "140px" }} onClick={createMetricModal.onOpen}>
