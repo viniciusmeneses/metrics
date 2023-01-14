@@ -16,8 +16,8 @@ module Reports
 
       def call!
         metric = Metric.find(id)
-        series = get_series_for(metric)
-        average = get_average_for(metric)
+        series = get_series_for(id)
+        average = get_average_for(id)
 
         Success(result: { metric: { **metric.as_json, average:, series: } })
       rescue ActiveRecord::RecordNotFound
@@ -32,13 +32,13 @@ module Reports
       def get_series_for(metric_id)
         result = Reports::Records::SeriesByMetricQuery.call(metric_id:, group_by:)
         raise InvalidQueryError, result[:errors] if result.failure?
-        result[:series][metric_id]
+        result[:series][metric_id] || 0
       end
 
       def get_average_for(metric_id)
         result = Reports::Records::AverageByMetricQuery.call(metric_id:, per: group_by)
         raise InvalidQueryError, result[:errors] if result.failure?
-        result[:average][metric_id]
+        result[:average][metric_id] || []
       end
     end
   end

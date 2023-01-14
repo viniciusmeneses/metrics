@@ -15,9 +15,9 @@ module Reports
         series_by_metric = get_series_by_metric
         average_by_metric = get_average_by_metric
 
-        metrics = Metric.all.map do |metric|
+        metrics = Metric.all.order(created_at: :desc).map do |metric|
           id = metric.id
-          { **metric.as_json, average: average_by_metric[id], series: series_by_metric[id] }
+          { **metric.as_json, average: average_by_metric[id] || 0, series: series_by_metric[id] || [] }
         end
 
         Success(result: { metrics: })
