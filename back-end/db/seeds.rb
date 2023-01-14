@@ -11,7 +11,7 @@ return if Metric.exists?
 metrics = [
   Metric.create(name: "Signups"),
   Metric.create(name: "New Customers"),
-  Metric.create(name: "Upsells")
+  Metric.create(name: "Conversions")
 ]
 
 metrics.each do |metric|
