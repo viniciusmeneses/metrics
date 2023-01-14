@@ -13,11 +13,14 @@ metrics = [
 ]
 
 metrics.each do |metric|
-  random_records = 1000.times.map do
+  from_value = (rand * 100).to_i
+  to_value = (rand * 100).to_i + from_value
+
+  random_records = 500.times.map do
     {
       metric_id: metric.id,
       timestamp: Faker::Time.backward,
-      value: Faker::Number.between(from: 5, to: 500)
+      value: Faker::Number.between(from: from_value, to: to_value)
     }
   end
 
