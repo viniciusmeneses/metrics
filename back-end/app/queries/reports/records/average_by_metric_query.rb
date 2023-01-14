@@ -26,9 +26,16 @@ module Reports
 
       private
 
-      def calculate_average(grouped_record)
-        quantity = (grouped_record.end_timestamp - grouped_record.start_timestamp) / 1.send(per)
-        grouped_record.total / (quantity.floor + 1)
+      def calculate_average(record)
+        truncated_start = truncate_timestamp(record.start_timestamp)
+        truncated_end = truncate_timestamp(record.end_timestamp)
+
+        quantity = (truncated_end - truncated_start) / 1.send(per)
+        record.total / (quantity.floor + 1)
+      end
+
+      def truncate_timestamp(timestamp)
+        timestamp.send("beginning_of_#{per}")
       end
     end
   end
