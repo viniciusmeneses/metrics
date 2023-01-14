@@ -1,5 +1,6 @@
 import {
   Button,
+  chakra,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -33,7 +34,7 @@ export const CreateMetricModal = (props: Omit<ModalProps, "children">) => {
       <ModalOverlay />
 
       <ModalContent>
-        <form onSubmit={onSubmit} noValidate>
+        <chakra.form display="flex" flexDirection="column" flex={1} onSubmit={onSubmit} noValidate>
           <ModalHeader>Create metric</ModalHeader>
 
           <ModalBody pb={6}>
@@ -59,7 +60,7 @@ export const CreateMetricModal = (props: Omit<ModalProps, "children">) => {
               Create
             </Button>
           </ModalFooter>
-        </form>
+        </chakra.form>
       </ModalContent>
     </Modal>
   );

@@ -14,6 +14,7 @@ import {
 import { useSingleMetricReport } from "../../../api";
 import { useSearchMetrics } from "../../../models/metric";
 import { formatNumber } from "../../../models/number";
+import { CreateRecordModal } from "../../record";
 import { MetricChart } from "../MetricChart";
 
 interface Props {
@@ -49,6 +50,8 @@ export const MetricCard = ({ metricId, ...props }: CardProps & Props) => {
       <CardBody pt={0} pb={3} pl={1} pr={4}>
         <MetricChart name={metric.name} series={metric.series} />
       </CardBody>
+
+      <CreateRecordModal metricId={metric.id} {...createRecordModal} />
     </Card>
   );
 };

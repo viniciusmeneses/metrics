@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { Divider, Spinner, VStack } from "@chakra-ui/react";
 
-import { AllMetricsReport, useAllMetricsReport } from "../../api";
+import { useAllMetricsReport } from "../../api";
 import { Header, Layout, Search } from "../../components/common";
 import { MetricCard } from "../../components/metric";
 import { useSearchMetrics } from "../../models/metric";

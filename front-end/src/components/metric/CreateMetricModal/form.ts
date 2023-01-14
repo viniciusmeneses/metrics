@@ -15,7 +15,7 @@ interface Options {
 
 export const useCreateMetricForm = (options: Options) => {
   const createMetricFormSchema: yup.SchemaOf<CreateMetricForm> = yup.object({
-    name: yup.string().required("Is a required").max(30, "Must be at most 30 characters"),
+    name: yup.string().required("Is required").max(30, "Must be at most 30 characters"),
   });
 
   const { mutateAsync, isLoading } = useCreateMetric(options);
