@@ -22,7 +22,11 @@ module Reports
       private
 
       def truncate_timestamp_sql
-        Arel.sql(Record.sanitize_sql_array(["DATE_TRUNC(?, records.timestamp)", group_by]))
+        Arel.sql(Record.sanitize_sql_array([
+          "DATE_TRUNC(?, records.timestamp AT TIME ZONE ?)",
+          group_by,
+          Time.zone.formatted_offset
+        ]))
       end
 
       def to_series(records)
