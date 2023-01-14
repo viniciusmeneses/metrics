@@ -29,9 +29,8 @@ services:
       - 3000:3000
     volumes:
       - ./front-end:/app
+      - /app/node_modules/
     links:
       - back-end
     depends_on:
       - back-end
-    environment:
-      REACT_APP_API_URL: http://back-end:3001
