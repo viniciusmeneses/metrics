@@ -14,7 +14,7 @@ Full-stack application to analyze your business metrics with a user-friendly das
 - React.js
 - Chakra UI
 - React Hook Form
-- TanSack Query
+- TanStack Query
 - Apexcharts
 - ESLint
 - Prettier
