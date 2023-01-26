@@ -3,14 +3,12 @@ require "rails_helper"
 RSpec.describe Metrics::Create do
   describe "#call" do
     describe "failure" do
-      context "with invalid attributes" do
-        context "when name is not string" do
-          it "returns a failure" do
-            result = described_class.call(name: 1)
+      context "when name is not string" do
+        it "returns a failure" do
+          result = described_class.call(name: 1)
 
-            expect(result).to be_a_failure
-            expect(result[:errors][:name]).to eq(["must be a kind of String"])
-          end
+          expect(result).to be_a_failure
+          expect(result[:errors][:name]).to eq(["must be a kind of String"])
         end
       end
 
