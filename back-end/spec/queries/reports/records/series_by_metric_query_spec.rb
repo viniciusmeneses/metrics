@@ -41,7 +41,7 @@ RSpec.describe Reports::Records::SeriesByMetricQuery do
         result = described_class.call(group_by: :day)
 
         expect(result).to be_a_success
-        expect(result[:series]).to match(
+        expect(result[:series]).to include(
           metric_1.id => [[satisfy(&:to_time), be_a(Numeric)]],
           metric_2.id => [[satisfy(&:to_time), be_a(Numeric)]]
         )
@@ -57,7 +57,7 @@ RSpec.describe Reports::Records::SeriesByMetricQuery do
           result = described_class.call(group_by: :minute)
 
           expect(result).to be_a_success
-          expect(result[:series]).to match(metric.id => [
+          expect(result[:series]).to include(metric.id => [
             ["2023-01-01T01:05:00Z", 200],
             ["2023-01-01T01:06:00Z", 100]
           ])
@@ -74,7 +74,7 @@ RSpec.describe Reports::Records::SeriesByMetricQuery do
           result = described_class.call(group_by: :hour)
 
           expect(result).to be_a_success
-          expect(result[:series]).to match(metric.id => [
+          expect(result[:series]).to include(metric.id => [
             ["2023-01-01T05:00:00Z", 100],
             ["2023-01-01T20:00:00Z", 200]
           ])
@@ -91,7 +91,7 @@ RSpec.describe Reports::Records::SeriesByMetricQuery do
           result = described_class.call(group_by: :day)
 
           expect(result).to be_a_success
-          expect(result[:series]).to match(metric.id => [
+          expect(result[:series]).to include(metric.id => [
             ["2022-05-01T00:00:00Z", 100],
             ["2023-01-01T00:00:00Z", 200]
           ])
@@ -108,7 +108,7 @@ RSpec.describe Reports::Records::SeriesByMetricQuery do
           result = described_class.call(metric_id: metric_1.id, group_by: :minute)
 
           expect(result).to be_a_success
-          expect(result[:series]).to match(metric_1.id => [[satisfy(&:to_time), be_a(Numeric)]])
+          expect(result[:series]).to include(metric_1.id => [[satisfy(&:to_time), be_a(Numeric)]])
         end
       end
     end

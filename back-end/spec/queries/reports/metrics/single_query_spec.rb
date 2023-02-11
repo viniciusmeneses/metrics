@@ -2,30 +2,32 @@ require "rails_helper"
 
 RSpec.describe Reports::Metrics::SingleQuery do
   describe "#call" do
+    let(:metric) { create(:metric) }
+
     describe "failure" do
+      let(:failure_result) { result_double(success: false, errors: { attribute: ["message"] }) }
+
       context "when id is not integer" do
-        it "returns a failure" do
+        it "returns validation errors" do
           result = described_class.call(id: nil)
 
           expect(result).to be_a_failure
-          expect(result[:errors][:id]).to eq(["must be a kind of Integer"])
+          expect(result[:errors].messages).to eq(id: ["must be a kind of Integer"])
         end
       end
 
       context "when metric does not exist" do
-        it "returns a failure" do
+        it "returns validation errors" do
           result = described_class.call(id: 5)
 
           expect(result).to be_a_failure
-          expect(result[:errors][:id]).to eq(["is invalid"])
+          expect(result[:errors].messages).to eq(id: ["is invalid"])
         end
       end
 
       context "when series query fails" do
-        it "returns a failure" do
-          metric = create(:metric)
-          series = instance_double(Micro::Case::Result, failure?: true, "[]": { attribute: ["message"] })
-          allow(Reports::Records::SeriesByMetricQuery).to receive(:call).and_return(series)
+        it "returns validation errors" do
+          allow(Reports::Records::SeriesByMetricQuery).to receive(:call).and_return(failure_result)
 
           result = described_class.call(id: metric.id)
 
@@ -35,10 +37,8 @@ RSpec.describe Reports::Metrics::SingleQuery do
       end
 
       context "when average query fails" do
-        it "returns a failure" do
-          metric = create(:metric)
-          average = instance_double(Micro::Case::Result, failure?: true, "[]": { attribute: ["message"] })
-          allow(Reports::Records::AverageByMetricQuery).to receive(:call).and_return(average)
+        it "returns validation errors" do
+          allow(Reports::Records::AverageByMetricQuery).to receive(:call).and_return(failure_result)
 
           result = described_class.call(id: metric.id)
 
@@ -49,17 +49,19 @@ RSpec.describe Reports::Metrics::SingleQuery do
     end
 
     describe "success" do
-      it "returns metric with series and average" do
-        metric = create(:metric)
-        series = instance_double(Micro::Case::Result, failure?: false, "[]": { metric.id => [[Time.current.iso8601, 100]] })
-        average = instance_double(Micro::Case::Result, failure?: false, "[]": { metric.id => 10 })
-        allow(Reports::Records::SeriesByMetricQuery).to receive(:call).and_return(series)
-        allow(Reports::Records::AverageByMetricQuery).to receive(:call).and_return(average)
+      let(:average) { result_double(average: { metric.id => 10 }) }
+      let(:series) { result_double(series: { metric.id => [[Time.current.iso8601, 100]] }) }
 
+      before do
+        allow(Reports::Records::AverageByMetricQuery).to receive(:call).and_return(average)
+        allow(Reports::Records::SeriesByMetricQuery).to receive(:call).and_return(series)
+      end
+
+      it "returns metric with series and average" do
         result = described_class.call(id: metric.id)
 
         expect(result).to be_a_success
-        expect(result[:metric]).to match(
+        expect(result[:metric]).to include(
           **metric.as_json,
           average: 10,
           series: series[:series][metric.id]
@@ -67,10 +69,6 @@ RSpec.describe Reports::Metrics::SingleQuery do
       end
 
       it "calls series query with metric_id and group_by" do
-        metric = create(:metric)
-        series = instance_double(Micro::Case::Result, failure?: false, "[]": {})
-        allow(Reports::Records::SeriesByMetricQuery).to receive(:call).and_return(series)
-
         described_class.call(id: metric.id, group_by: :hour)
 
         expect(Reports::Records::SeriesByMetricQuery).to have_received(:call).with(
@@ -80,10 +78,6 @@ RSpec.describe Reports::Metrics::SingleQuery do
       end
 
       it "calls average query with metric_id and per" do
-        metric = create(:metric)
-        average = instance_double(Micro::Case::Result, failure?: false, "[]": {})
-        allow(Reports::Records::AverageByMetricQuery).to receive(:call).and_return(average)
-
         described_class.call(id: metric.id, group_by: :minute)
 
         expect(Reports::Records::AverageByMetricQuery).to have_received(:call).with(

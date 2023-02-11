@@ -1,15 +1,19 @@
 require "rails_helper"
 
 RSpec.describe "Metrics records management" do
+  let(:body) { JSON.parse(response.body) }
+  let(:metric) { create(:metric) }
+
   describe "POST /metrics/:id/records" do
+    before { allow(Records::Create).to receive(:call).and_call_original }
+
     it "calls Records::Create service" do
-      allow(Records::Create).to receive(:call).and_call_original
       params = { timestamp: Time.current.iso8601, value: 25.1 }
 
-      post "/metrics/1/records", params:, as: :json
+      post "/metrics/#{metric.id}/records", as: :json, params: params
 
       expect(Records::Create).to have_received(:call).with(
-        "metric_id" => 1,
+        "metric_id" => metric.id,
         "timestamp" => params[:timestamp],
         "value" => params[:value]
       )
@@ -17,10 +21,7 @@ RSpec.describe "Metrics records management" do
 
     context "when params are valid" do
       it "responds with record and status code 201" do
-        metric = create(:metric)
-        params = { timestamp: Time.current.iso8601, value: 100 }
-
-        post "/metrics/#{metric.id}/records", params:, as: :json
+        post "/metrics/#{metric.id}/records", as: :json, params: { timestamp: Time.current.iso8601, value: 100 }
         body = JSON.parse(response.body)
 
         expect(response).to have_http_status(:created)
@@ -30,9 +31,7 @@ RSpec.describe "Metrics records management" do
 
     context "when params are invalid" do
       it "responds with errors and status code 422" do
-        params = { timestamp: "", value: 0 }
-
-        post "/metrics/1/records", params:, as: :json
+        post "/metrics/1/records", as: :json, params: { timestamp: "", value: 0 }
         body = JSON.parse(response.body)
 
         expect(response).to have_http_status(:unprocessable_entity)
