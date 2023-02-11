@@ -2,10 +2,10 @@ module Reports
   module Records
     class AverageByMetricQuery < Micro::Case
       attribute :metric_id
-      attribute :per, default: :day
+      attribute :group_by, default: :day
 
       validates :metric_id, kind: Integer, allow_nil: true
-      validates :per, kind: Symbol, inclusion: { in: [:minute, :hour, :day] }
+      validates :group_by, kind: Symbol, inclusion: { in: [:minute, :hour, :day] }
 
       def call!
         grouped_records = Record
@@ -30,12 +30,12 @@ module Reports
         truncated_start = truncate_timestamp(record.start_timestamp)
         truncated_end = truncate_timestamp(record.end_timestamp)
 
-        quantity = (truncated_end - truncated_start) / 1.send(per)
+        quantity = (truncated_end - truncated_start) / 1.send(group_by)
         record.total / (quantity.floor + 1)
       end
 
       def truncate_timestamp(timestamp)
-        timestamp.send("beginning_of_#{per}")
+        timestamp.send("beginning_of_#{group_by}")
       end
     end
   end

@@ -26,7 +26,7 @@ module Reports
 
       def average_by_metric
         @average_by_metric ||= begin
-          result = Reports::Records::AverageByMetricQuery.call(per: group_by)
+          result = Reports::Records::AverageByMetricQuery.call(group_by:)
           raise Errors::InvalidQuery, result[:errors] if result.failure?
           result[:average]
         end
