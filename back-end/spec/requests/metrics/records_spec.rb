@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe "Metrics records management" do
-  let(:body) { JSON.parse(response.body) }
   let(:metric) { create(:metric) }
 
   describe "POST /metrics/:id/records" do
@@ -35,7 +34,7 @@ RSpec.describe "Metrics records management" do
         body = JSON.parse(response.body)
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(body).to include("errors" => {
+        expect(body).to eq("errors" => {
           "metric" => ["must exist"],
           "timestamp" => ["can't be blank"],
           "value" => ["must be greater than 0"]

@@ -61,10 +61,10 @@ RSpec.describe Reports::Metrics::AllQuery do
         expect(Reports::Records::SeriesByMetricQuery).to have_received(:call).with(group_by: :hour)
       end
 
-      it "calls average query with per attribute" do
+      it "calls average query with group_by attribute" do
         described_class.call(group_by: :minute)
 
-        expect(Reports::Records::AverageByMetricQuery).to have_received(:call).with(per: :minute)
+        expect(Reports::Records::AverageByMetricQuery).to have_received(:call).with(group_by: :minute)
       end
     end
   end

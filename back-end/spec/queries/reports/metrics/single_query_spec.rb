@@ -61,7 +61,7 @@ RSpec.describe Reports::Metrics::SingleQuery do
         result = described_class.call(id: metric.id)
 
         expect(result).to be_a_success
-        expect(result[:metric]).to include(
+        expect(result[:metric]).to eq(
           **metric.as_json,
           average: 10,
           series: series[:series][metric.id]
@@ -77,12 +77,12 @@ RSpec.describe Reports::Metrics::SingleQuery do
         )
       end
 
-      it "calls average query with metric_id and per" do
+      it "calls average query with metric_id and group_by" do
         described_class.call(id: metric.id, group_by: :minute)
 
         expect(Reports::Records::AverageByMetricQuery).to have_received(:call).with(
           metric_id: metric.id,
-          per: :minute
+          group_by: :minute
         )
       end
     end

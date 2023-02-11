@@ -12,21 +12,21 @@ RSpec.describe Reports::Records::AverageByMetricQuery do
         end
       end
 
-      context "when per is not symbol" do
+      context "when group_by is not symbol" do
         it "returns validation errors" do
-          result = described_class.call(per: "year")
+          result = described_class.call(group_by: "year")
 
           expect(result).to be_a_failure
-          expect(result[:errors].messages).to eq(per: ["must be a kind of Symbol", "is not included in the list"])
+          expect(result[:errors].messages).to eq(group_by: ["must be a kind of Symbol", "is not included in the list"])
         end
       end
 
-      context "when per is not minute, hour or day" do
+      context "when group_by is not minute, hour or day" do
         it "returns validation errors" do
-          result = described_class.call(per: :year)
+          result = described_class.call(group_by: :year)
 
           expect(result).to be_a_failure
-          expect(result[:errors].messages).to eq(per: ["is not included in the list"])
+          expect(result[:errors].messages).to eq(group_by: ["is not included in the list"])
         end
       end
     end
@@ -37,51 +37,51 @@ RSpec.describe Reports::Records::AverageByMetricQuery do
       it "calculates average by metric" do
         create_list(:record, 2, metric: metrics[0])
         create_list(:record, 2, metric: metrics[1])
-        result = described_class.call(per: :day)
+        result = described_class.call(group_by: :day)
 
         expect(result).to be_a_success
         expect(result[:average]).to include(metrics[0].id => be_a(Numeric), metrics[1].id => be_a(Numeric))
       end
 
-      context "when per minute" do
+      context "when group_by minute" do
         it "calculates average by metric" do
           metric = metrics[0]
           create(:record, value: 100, timestamp: Time.zone.parse("2023-01-01 01:05:30"), metric:)
           create(:record, value: 100, timestamp: Time.zone.parse("2023-01-01 01:06:55"), metric:)
           create(:record, value: 100, timestamp: Time.zone.parse("2023-01-01 01:05:10"), metric:)
 
-          result = described_class.call(per: :minute)
+          result = described_class.call(group_by: :minute)
 
           expect(result).to be_a_success
-          expect(result[:average]).to include(metric.id => 150)
+          expect(result[:average]).to eq(metric.id => 150)
         end
       end
 
-      context "when per hour" do
+      context "when group_by hour" do
         it "calculates average by metric" do
           metric = metrics[0]
           create(:record, value: 100, timestamp: Time.zone.parse("2023-01-01 05:05:30"), metric:)
           create(:record, value: 200, timestamp: Time.zone.parse("2023-01-01 08:10:55"), metric:)
           create(:record, value: 200, timestamp: Time.zone.parse("2023-01-01 09:50:10"), metric:)
 
-          result = described_class.call(per: :hour)
+          result = described_class.call(group_by: :hour)
 
           expect(result).to be_a_success
-          expect(result[:average]).to include(metric.id => 100)
+          expect(result[:average]).to eq(metric.id => 100)
         end
       end
 
-      context "when per day" do
+      context "when group_by day" do
         it "calculates average by metric" do
           metric = metrics[0]
           create(:record, value: 100, timestamp: Time.zone.parse("2023-01-01 05:05:30"), metric:)
           create(:record, value: 45, timestamp: Time.zone.parse("2023-01-15 20:41:55"), metric:)
           create(:record, value: 5, timestamp: Time.zone.parse("2023-01-10 15:22:22"), metric:)
 
-          result = described_class.call(per: :day)
+          result = described_class.call(group_by: :day)
 
           expect(result).to be_a_success
-          expect(result[:average]).to include(metric.id => 10)
+          expect(result[:average]).to eq(metric.id => 10)
         end
       end
 
@@ -90,7 +90,7 @@ RSpec.describe Reports::Records::AverageByMetricQuery do
           create_list(:record, 2, metric: metrics[0])
           create_list(:record, 2, metric: metrics[1])
 
-          result = described_class.call(metric_id: metrics[0].id, per: :minute)
+          result = described_class.call(metric_id: metrics[0].id, group_by: :minute)
 
           expect(result).to be_a_success
           expect(result[:average]).to include(metrics[0].id => be_a(Numeric))

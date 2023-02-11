@@ -8,7 +8,7 @@ RSpec.describe Metrics::Create do
           result = described_class.call(name: 1)
 
           expect(result).to be_a_failure
-          expect(result[:errors].messages).to include(name: ["must be a kind of String"])
+          expect(result[:errors].messages).to eq(name: ["must be a kind of String"])
         end
       end
 
@@ -17,7 +17,7 @@ RSpec.describe Metrics::Create do
           result = described_class.call(name: "")
 
           expect(result).to be_a_failure
-          expect(result[:errors].messages).to include(name: ["can't be blank"])
+          expect(result[:errors].messages).to eq(name: ["can't be blank"])
         end
       end
     end

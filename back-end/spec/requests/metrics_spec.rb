@@ -1,8 +1,6 @@
 require "rails_helper"
 
 RSpec.describe "Metrics management" do
-  let(:body) { JSON.parse(response.body) }
-
   describe "POST /metrics" do
     before { allow(Metrics::Create).to receive(:call).and_call_original }
 
@@ -26,7 +24,7 @@ RSpec.describe "Metrics management" do
         post "/metrics", as: :json, params: { metric: { name: "" } }
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(body).to include("errors" => { "name" => ["can't be blank"] })
+        expect(body).to eq("errors" => { "name" => ["can't be blank"] })
       end
     end
   end
