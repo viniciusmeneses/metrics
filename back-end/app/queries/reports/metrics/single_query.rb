@@ -6,39 +6,33 @@ module Reports
 
       validates :id, kind: Integer
 
-      class InvalidQueryError < StandardError
-        attr_reader :errors
-
-        def initialize(errors)
-          @errors = errors
-        end
-      end
-
       def call!
         metric = Metric.find(id)
-        series = get_series_for(id)
-        average = get_average_for(id)
 
-        Success(result: { metric: { **metric.as_json, average:, series: } })
+        Success(result: { metric: {
+          **metric.as_json,
+          average: average_for_metric || 0,
+          series: series_for_metric || []
+        } })
       rescue ActiveRecord::RecordNotFound
         errors.add(:id, :invalid)
         Failure(:metric_not_found, result: { errors: })
-      rescue InvalidQueryError => error
+      rescue Errors::InvalidQuery => error
         Failure(:invalid_query, result: { errors: error.errors })
       end
 
       private
 
-      def get_series_for(metric_id)
-        result = Reports::Records::SeriesByMetricQuery.call(metric_id:, group_by:)
-        raise InvalidQueryError, result[:errors] if result.failure?
-        result[:series][metric_id] || 0
+      def series_for_metric
+        result = Reports::Records::SeriesByMetricQuery.call(metric_id: id, group_by:)
+        raise Errors::InvalidQuery, result[:errors] if result.failure?
+        result[:series][id]
       end
 
-      def get_average_for(metric_id)
-        result = Reports::Records::AverageByMetricQuery.call(metric_id:, per: group_by)
-        raise InvalidQueryError, result[:errors] if result.failure?
-        result[:average][metric_id] || []
+      def average_for_metric
+        result = Reports::Records::AverageByMetricQuery.call(metric_id: id, per: group_by)
+        raise Errors::InvalidQuery, result[:errors] if result.failure?
+        result[:average][id]
       end
     end
   end

@@ -10,7 +10,7 @@ return if Metric.exists?
 
 metrics = [
   Metric.create(name: "Payments"),
-  Metric.create(name: "Signups"),
+  Metric.create(name: "Signups")
 ]
 
 metrics.each do |metric|
@@ -25,5 +25,5 @@ metrics.each do |metric|
     }
   end
 
-  Record.insert_all(random_records)
+  Record.insert_all(random_records) # rubocop:disable Rails/SkipsModelValidations
 end
