@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { Divider, Spinner, VStack } from "@chakra-ui/react";
 
 import { useAllMetricsReport } from "../../api";
-import { Header, Layout, Search } from "../../components/common";
-import { MetricCard } from "../../components/metric";
+import { Header, Layout } from "../../components/common";
+import { MetricCard, Search } from "../../components/metric";
 import { useSearchMetrics } from "../../models/metric";
 
 export const Home = () => {
