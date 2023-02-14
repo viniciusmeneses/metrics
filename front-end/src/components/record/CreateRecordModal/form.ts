@@ -1,3 +1,4 @@
+import { formatISO, isFuture } from "date-fns";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -20,7 +21,7 @@ export const useCreateRecordForm = ({ metricId, ...options }: Options) => {
     timestamp: yup
       .date()
       .typeError("Must be a valid date and time")
-      .max(new Date(), "Must not be future")
+      .test("is-not-future", "Must not be future", (value) => !value || !isFuture(value))
       .required("Is required"),
     value: yup
       .number()
@@ -36,7 +37,7 @@ export const useCreateRecordForm = ({ metricId, ...options }: Options) => {
   const { mutateAsync, isLoading } = useCreateRecord(options);
 
   const onSubmit = handleSubmit(({ timestamp, ...values }) =>
-    mutateAsync({ metricId, timestamp: timestamp.toISOString(), ...values }),
+    mutateAsync({ metricId, timestamp: formatISO(timestamp), ...values }),
   );
 
   return { ...form, isSubmitting: isLoading, onSubmit };
