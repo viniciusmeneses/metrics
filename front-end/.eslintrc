@@ -29,5 +29,13 @@
     "no-eq-null": "off",
     "eqeqeq": ["error", "always", { "null": "ignore" }],
     "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.test.tsx"],
+      "rules": {
+        "max-nested-callbacks": "off"
+      }
+    }
+  ]
 }
