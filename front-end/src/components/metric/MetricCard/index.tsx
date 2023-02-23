@@ -37,7 +37,7 @@ export const MetricCard = ({ metricId, ...props }: CardProps & Props) => {
           <Box flex="1">
             <Heading size="md">{metric.name}</Heading>
             <Text color="gray.500">
-              {formatNumber(metric?.average)} per {groupBy ?? "day"}
+              {formatNumber(metric?.average)} per {groupBy}
             </Text>
           </Box>
 

@@ -4,8 +4,6 @@ import { faker } from "@faker-js/faker";
 
 import { AllMetricsReport, CreateMetric, CreateRecord, SingleMetricReport } from "../api";
 
-const recentISO = () => faker.date.recent().toISOString();
-
 const createMetric = rest.post<{}, {}, CreateMetric.Success>("/metrics", async (req, res, ctx) => {
   const body = await req.json<CreateMetric.Data>();
 
@@ -13,9 +11,9 @@ const createMetric = rest.post<{}, {}, CreateMetric.Success>("/metrics", async (
     ctx.status(201),
     ctx.json({
       ...body,
-      id: faker.datatype.number(),
-      created_at: recentISO(),
-      updated_at: recentISO(),
+      id: 1,
+      created_at: "2020-01-01T05:00:00+01:00",
+      updated_at: "2020-01-01T05:00:00+01:00",
     }),
   );
 });
@@ -29,10 +27,10 @@ const createRecord = rest.post<{}, { metricId: string }, CreateRecord.Success>(
       ctx.status(201),
       ctx.json({
         ...body,
-        id: faker.datatype.number(),
-        metric_id: Number(req.params.metricId),
-        created_at: recentISO(),
-        updated_at: recentISO(),
+        id: 1,
+        metric_id: 1,
+        created_at: "2020-01-01T05:00:00+01:00",
+        updated_at: "2020-01-01T05:00:00+01:00",
       }),
     );
   },
@@ -40,17 +38,24 @@ const createRecord = rest.post<{}, { metricId: string }, CreateRecord.Success>(
 
 const allMetricsReport = rest.get<{}, {}, AllMetricsReport.Success>(
   "/reports/metrics",
-  async (_, res, ctx) =>
+  (_, res, ctx) =>
     res(
       ctx.status(200),
       ctx.json([
         {
-          id: faker.datatype.number(),
-          name: faker.lorem.word(),
-          created_at: recentISO(),
-          updated_at: recentISO(),
-          average: faker.datatype.number(),
-          series: Array.from({ length: 10 }, () => [recentISO(), faker.datatype.number()]),
+          id: 1,
+          name: "Metric",
+          created_at: "2020-01-01T05:00:00+01:00",
+          updated_at: "2020-01-01T05:00:00+01:00",
+          average: 592.5,
+          series: [
+            ["2020-01-10T20:00:00+01:00", 2000],
+            ["2020-01-11T15:00:00+01:00", 1000],
+            ["2020-01-12T06:00:00+01:00", 250],
+            ["2020-01-13T10:00:00+01:00", 250],
+            ["2020-01-14T12:00:00+01:00", 50],
+            ["2020-01-15T15:00:00+01:00", 5],
+          ],
         },
       ]),
     ),
@@ -58,16 +63,23 @@ const allMetricsReport = rest.get<{}, {}, AllMetricsReport.Success>(
 
 const singleMetricReport = rest.get<{}, { id: string }, SingleMetricReport.Success>(
   "/reports/metrics/:metricId",
-  async (req, res, ctx) =>
+  (req, res, ctx) =>
     res(
       ctx.status(200),
       ctx.json({
-        id: Number(req.params.id),
-        name: faker.lorem.word(),
-        created_at: recentISO(),
-        updated_at: recentISO(),
-        average: faker.datatype.number(),
-        series: Array.from({ length: 10 }, () => [recentISO(), faker.datatype.number()]),
+        id: 1,
+        name: "Metric",
+        created_at: "2020-01-01T05:00:00+01:00",
+        updated_at: "2020-01-01T05:00:00+01:00",
+        average: 592.5,
+        series: [
+          ["2020-01-10T20:00:00+01:00", 2000],
+          ["2020-01-11T15:00:00+01:00", 1000],
+          ["2020-01-12T06:00:00+01:00", 250],
+          ["2020-01-13T10:00:00+01:00", 250],
+          ["2020-01-14T12:00:00+01:00", 50],
+          ["2020-01-15T15:00:00+01:00", 5],
+        ],
       }),
     ),
 );

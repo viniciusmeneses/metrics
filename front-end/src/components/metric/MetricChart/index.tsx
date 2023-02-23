@@ -16,5 +16,13 @@ export const MetricChart = ({ name, series }: Props) => {
     return [{ name, data }];
   }, [name, series]);
 
-  return <ReactApexChart type="area" height={250} series={chartSeries} options={options} />;
+  return (
+    <ReactApexChart
+      data-testid="chart"
+      type="area"
+      height={250}
+      series={chartSeries}
+      options={options}
+    />
+  );
 };

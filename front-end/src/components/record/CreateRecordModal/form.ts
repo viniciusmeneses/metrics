@@ -25,6 +25,7 @@ export const useCreateRecordForm = ({ metricId, ...options }: Options) => {
       .required("Is required"),
     value: yup
       .number()
+      .typeError("Must be a valid value")
       .transform((_, value) => parseFloat(value.replaceAll(".", "").replaceAll(",", ".")))
       .required("Is required")
       .min(0.01, "Must be greater than or equal to 0.01"),
