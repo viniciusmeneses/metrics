@@ -57,13 +57,21 @@ const allMetricsReport = rest.get<{}, {}, AllMetricsReport.Success>(
             ["2020-01-15T15:00:00+01:00", 5],
           ],
         },
+        {
+          id: 2,
+          name: "Metric 2",
+          created_at: "2021-05-06T05:16:54+01:00",
+          updated_at: "2020-08-04T05:13:22+01:00",
+          average: 0,
+          series: [],
+        },
       ]),
     ),
 );
 
 const singleMetricReport = rest.get<{}, { id: string }, SingleMetricReport.Success>(
   "/reports/metrics/:metricId",
-  (req, res, ctx) =>
+  (_, res, ctx) =>
     res(
       ctx.status(200),
       ctx.json({

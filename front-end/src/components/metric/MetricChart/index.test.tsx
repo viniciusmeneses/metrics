@@ -18,10 +18,7 @@ const mockProps = {
   ] as [string, number][],
 };
 
-jest.mock("react-apexcharts", () => ({
-  __esModule: true,
-  default: jest.fn().mockReturnValue(null),
-}));
+jest.mock("react-apexcharts");
 
 describe("MetricChart", () => {
   it("renders chart correctly", async () => {

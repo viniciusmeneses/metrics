@@ -31,7 +31,7 @@ export const MetricCard = ({ metricId, ...props }: CardProps & Props) => {
   if (!metric) return null;
 
   return (
-    <Card bgColor="white" variant="outline" {...props}>
+    <Card bgColor="white" variant="outline" as="article" {...props}>
       <CardHeader pb={2}>
         <HStack>
           <Box flex="1">
